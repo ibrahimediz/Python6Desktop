@@ -49,8 +49,25 @@ class Veritabani:
             """.format(ay,kalem,tutar,ID)
             )
             self.db.commit()
+            return "1"
         except Exception as Hata:
-            print("Hata Mesajı:",Hata)
+            return "Hata Mesajı: {}".format(Hata)
+        finally:
+            self.db.close()
+
+    def VeriSil(self,ID):
+        try:
+            officeboy = self.veritabaniAc()
+            officeboy.execute("""
+                DELETE FROM 
+                HSP_BILGI 
+                WHERE HSP_BLG_ID = {} 
+            """.format(ID)
+            )
+            self.db.commit()
+            return "1"
+        except Exception as Hata:
+            return "Hata Mesajı: {}".format(Hata)
         finally:
             self.db.close()
 

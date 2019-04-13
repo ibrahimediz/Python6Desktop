@@ -1,4 +1,5 @@
 import sys
+import os
 from AnaDB import Veritabani
 from PyQt5.QtWidgets import QApplication,QMainWindow,QTableWidgetItem,QMessageBox
 from PyQt5.QtCore import pyqtSlot
@@ -7,9 +8,10 @@ from PyQt5 import uic
 class Ana(QMainWindow):
     def __init__(self, *args, **kwargs):
         super().__init__()
+        print(os.getcwd())
         ## veritabanı ve arayüz dosyaları çağırılıyor
-        self.vt = Veritabani(r"D:\İbrahim EDİZ\DesktopProje\IEDB.db")
-        self.win = uic.loadUi(r"D:\İbrahim EDİZ\DesktopProje\ana.ui")
+        self.vt = Veritabani(os.getcwd()+r"\IEDB.db")
+        self.win = uic.loadUi(os.getcwd()+r"\ana.ui")
         
         ## Arayüzdeki nesneler veritabanından dolduruluyor
         self.InitUI()
@@ -18,8 +20,23 @@ class Ana(QMainWindow):
         self.win.btYeni.clicked.connect(self.InitUI)
         self.win.lstHarcama.itemDoubleClicked.connect(self.secim)
         self.win.btKaydet.clicked.connect(self.Kaydet)
+        self.win.btSil.clicked.connect(self.Sil)
         ## Ekranda Gösterim için
         self.win.show()
+    
+    def Sil(self):
+        ID = self.win.lblKayit.text()
+        if self.Mesaj(4,"Silme İşlemi","Silmek İstediğinizden Emin Misiniz?"):
+            sonuc = self.vt.VeriSil(ID)
+            if sonuc == "1":
+                self.Mesaj(1,"Silme İşlemi","Silme Gerçekleşti")
+                self.InitUI()
+                self.TabloDoldur()
+            else:
+                self.Mesaj(2,"Silme İşlemi",sonuc)
+
+
+
     def secim(self):
         # print(self.liste[self.win.lstHarcama.currentRow()])
         tutar = str(self.liste[self.win.lstHarcama.currentRow()][2])
@@ -38,20 +55,27 @@ class Ana(QMainWindow):
         elif icon == 3:
             QMessageBox.warning(self,baslik,metin,QMessageBox.Ok)
         elif icon == 4:
-            cevap =  QMessageBox.question(self,baslik,metin,\
-                QMessageBox.Ok|QMessageBox.Cancel,QMessageBox.Cancel)
-            if cevap == QMessageBox.Ok:
-                sonuc = True
-            else:
-                sonuc = False
+            try:
+                cevap =  QMessageBox.question(self,baslik,metin,QMessageBox.Ok|QMessageBox.Cancel,QMessageBox.Cancel)
+                if cevap == QMessageBox.Ok:
+                    sonuc = True
+                else:
+                    sonuc = False
+            except:
+                print("Hata")
         return sonuc
 
 
     def Kaydet(self):
+        ID = self.win.lblKayit.text()
         kalem = self.win.cmbKalem.currentIndex()
         ay = self.win.cmbAy.currentIndex()
         tutar =  self.win.txtTutar.text()
-        sonuc = self.vt.VeriEkle(kalem,ay,tutar)
+        if ID == "":
+            sonuc = self.vt.VeriEkle(kalem,ay,tutar)
+        else:
+            sonuc = self.vt.VeriGuncelle(kalem,ay,tutar,ID)
+        
         if sonuc == "1":
             self.Mesaj(1,"Bilgi","Başarıyla Kaydedildi")
             self.InitUI()
