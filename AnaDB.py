@@ -8,12 +8,18 @@ class Veritabani:
         cursor = self.db.cursor()
         return cursor 
 
-    def Listele(self):
+    def Listele(self,Ay,Kalem):
         try:
             officeboy = self.veritabaniAc()
-            officeboy.execute("""
-            SELECT * FROM V_HESAP
-            """)
+            sorgu = """
+            SELECT * FROM V_HESAP WHERE 1=1
+            """
+            if not Ay == "Seçiniz":
+                sorgu+= " AND Ay='"+Ay+"'"
+            if not Kalem == "Seçiniz":
+                sorgu+= " AND Kalem='"+Kalem+"'"
+                       
+            officeboy.execute(sorgu)
             return officeboy.fetchall()
         except Exception as Hata:
             print("Hata Mesajı:",Hata)

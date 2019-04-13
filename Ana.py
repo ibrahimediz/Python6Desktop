@@ -8,11 +8,11 @@ from PyQt5 import uic
 class Ana(QMainWindow):
     def __init__(self, *args, **kwargs):
         super().__init__()
-        print(os.getcwd())
         ## veritabanı ve arayüz dosyaları çağırılıyor
         self.vt = Veritabani(os.getcwd()+r"\IEDB.db")
         self.win = uic.loadUi(os.getcwd()+r"\ana.ui")
-        
+        self.secilenAy = "Seçiniz"
+        self.secilenKalem = "Seçiniz"
         ## Arayüzdeki nesneler veritabanından dolduruluyor
         self.InitUI()
         self.TabloDoldur()
@@ -21,9 +21,20 @@ class Ana(QMainWindow):
         self.win.lstHarcama.itemDoubleClicked.connect(self.secim)
         self.win.btKaydet.clicked.connect(self.Kaydet)
         self.win.btSil.clicked.connect(self.Sil)
+        self.win.cmbAy.currentTextChanged.connect(self.SecimAy)
+        self.win.cmbKalem.currentTextChanged.connect(self.SecimKalem)
         ## Ekranda Gösterim için
         self.win.show()
-    
+
+
+    def SecimAy(self,deger):
+        self.secilenAy = deger
+        self.TabloDoldur()
+    def SecimKalem(self,deger):
+        self.secilenKalem = deger
+        self.TabloDoldur()
+
+
     def Sil(self):
         ID = self.win.lblKayit.text()
         if self.Mesaj(4,"Silme İşlemi","Silmek İstediğinizden Emin Misiniz?"):
@@ -83,7 +94,8 @@ class Ana(QMainWindow):
         else:
             self.Mesaj(2,"Kayıt Hatası",sonuc)
     def TabloDoldur(self):
-        self.liste = self.vt.Listele()
+        self.win.lstHarcama.clear()
+        self.liste = self.vt.Listele(self.secilenAy,self.secilenKalem)
         self.win.lstHarcama.setHorizontalHeaderLabels(("ID","KALEM","TUTAR","AY"))
         self.win.lstHarcama.setRowCount(15)
         self.win.lstHarcama.setColumnCount(4)
