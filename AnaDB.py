@@ -68,8 +68,9 @@ class Veritabani:
             """.format(ay,kalem,tutar)
             )
             self.db.commit()
+            return "1"
         except Exception as Hata:
-            print("Hata Mesajı:",Hata)
+            return "Hata Mesajı: {}".format(Hata)
         finally:
             self.db.close()
 

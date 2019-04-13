@@ -1,6 +1,6 @@
 import sys
 from AnaDB import Veritabani
-from PyQt5.QtWidgets import QApplication,QMainWindow,QTableWidgetItem
+from PyQt5.QtWidgets import QApplication,QMainWindow,QTableWidgetItem,QMessageBox
 from PyQt5.QtCore import pyqtSlot
 from PyQt5 import uic
 
@@ -16,24 +16,55 @@ class Ana(QMainWindow):
         self.TabloDoldur()
         ## Arayüzdeki Nesnelere Fonksiyonlar Atanıyor
         self.win.btYeni.clicked.connect(self.InitUI)
-
+        self.win.lstHarcama.itemDoubleClicked.connect(self.secim)
         self.win.btKaydet.clicked.connect(self.Kaydet)
         ## Ekranda Gösterim için
         self.win.show()
+    def secim(self):
+        # print(self.liste[self.win.lstHarcama.currentRow()])
+        tutar = str(self.liste[self.win.lstHarcama.currentRow()][2])
+        ID = str(self.liste[self.win.lstHarcama.currentRow()][0])
+        self.win.lblKayit.setText(ID)
+        self.win.txtTutar.setText(tutar)
+        self.win.cmbKalem.setCurrentText(self.liste[self.win.lstHarcama.currentRow()][1])
+        self.win.cmbAy.setCurrentText(self.liste[self.win.lstHarcama.currentRow()][3])   
+
+    def Mesaj(self,icon,baslik,metin):
+        sonuc = True
+        if icon == 1:
+            QMessageBox.information(self,baslik,metin,QMessageBox.Ok)
+        elif icon == 2:
+            QMessageBox.critical(self,baslik,metin,QMessageBox.Ok)
+        elif icon == 3:
+            QMessageBox.warning(self,baslik,metin,QMessageBox.Ok)
+        elif icon == 4:
+            cevap =  QMessageBox.question(self,baslik,metin,\
+                QMessageBox.Ok|QMessageBox.Cancel,QMessageBox.Cancel)
+            if cevap == QMessageBox.Ok:
+                sonuc = True
+            else:
+                sonuc = False
+        return sonuc
+
 
     def Kaydet(self):
         kalem = self.win.cmbKalem.currentIndex()
         ay = self.win.cmbAy.currentIndex()
         tutar =  self.win.txtTutar.text()
-        self.vt.VeriEkle(kalem,ay,tutar)
-
+        sonuc = self.vt.VeriEkle(kalem,ay,tutar)
+        if sonuc == "1":
+            self.Mesaj(1,"Bilgi","Başarıyla Kaydedildi")
+            self.InitUI()
+            self.TabloDoldur()
+        else:
+            self.Mesaj(2,"Kayıt Hatası",sonuc)
     def TabloDoldur(self):
-        liste = self.vt.Listele()
+        self.liste = self.vt.Listele()
         self.win.lstHarcama.setHorizontalHeaderLabels(("ID","KALEM","TUTAR","AY"))
         self.win.lstHarcama.setRowCount(15)
         self.win.lstHarcama.setColumnCount(4)
         satir = 0
-        for a,b,c,d in liste:
+        for a,b,c,d in self.liste:
             self.win.lstHarcama.setItem(satir,0,QTableWidgetItem(str(a)))
             self.win.lstHarcama.setItem(satir,1,QTableWidgetItem(str(b)))
             self.win.lstHarcama.setItem(satir,2,QTableWidgetItem(str(c)))
