@@ -115,8 +115,21 @@
      <height>18</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuAyarlar">
+    <property name="title">
+     <string>Ayarlar</string>
+    </property>
+    <addaction name="separator"/>
+    <addaction name="actionKalem_Ekle"/>
+   </widget>
+   <addaction name="menuAyarlar"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionKalem_Ekle">
+   <property name="text">
+    <string>Kalem Ekle</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

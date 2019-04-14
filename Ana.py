@@ -4,7 +4,7 @@ from AnaDB import Veritabani
 from PyQt5.QtWidgets import QApplication,QMainWindow,QTableWidgetItem,QMessageBox
 from PyQt5.QtCore import pyqtSlot
 from PyQt5 import uic
-
+from dialog import Dialog
 class Ana(QMainWindow):
     def __init__(self, *args, **kwargs):
         super().__init__()
@@ -24,8 +24,14 @@ class Ana(QMainWindow):
         self.win.cmbAy.currentTextChanged.connect(self.SecimAy)
         self.win.cmbKalem.currentTextChanged.connect(self.SecimKalem)
         ## Ekranda Gösterim için
+        self.win.actionKalem_Ekle.triggered.connect(self.deneme)
+        self.dialog = Dialog(self) 
         self.win.show()
 
+
+
+    def deneme(self):
+        self.dialog.pencere.show()    
 
     def SecimAy(self,deger):
         self.secilenAy = deger
