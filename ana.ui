@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
+    <width>788</width>
     <height>600</height>
    </rect>
   </property>
@@ -111,7 +111,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>788</width>
      <height>18</height>
     </rect>
    </property>
@@ -122,12 +122,50 @@
     <addaction name="separator"/>
     <addaction name="actionKalem_Ekle"/>
    </widget>
+   <widget class="QMenu" name="menuDosya">
+    <property name="title">
+     <string>Dosya</string>
+    </property>
+    <addaction name="actionKaydet"/>
+    <addaction name="actionG_ncelle"/>
+    <addaction name="actionSil"/>
+    <addaction name="separator"/>
+    <addaction name="actionTemizle"/>
+    <addaction name="separator"/>
+    <addaction name="action_k"/>
+   </widget>
+   <addaction name="menuDosya"/>
    <addaction name="menuAyarlar"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionKalem_Ekle">
    <property name="text">
     <string>Kalem Ekle</string>
+   </property>
+  </action>
+  <action name="actionKaydet">
+   <property name="text">
+    <string>Kaydet</string>
+   </property>
+  </action>
+  <action name="actionG_ncelle">
+   <property name="text">
+    <string>Güncelle</string>
+   </property>
+  </action>
+  <action name="actionSil">
+   <property name="text">
+    <string>Sil</string>
+   </property>
+  </action>
+  <action name="actionTemizle">
+   <property name="text">
+    <string>Temizle</string>
+   </property>
+  </action>
+  <action name="action_k">
+   <property name="text">
+    <string>Çıkış</string>
    </property>
   </action>
  </widget>

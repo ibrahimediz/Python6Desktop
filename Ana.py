@@ -23,15 +23,22 @@ class Ana(QMainWindow):
         self.win.btSil.clicked.connect(self.Sil)
         self.win.cmbAy.currentTextChanged.connect(self.SecimAy)
         self.win.cmbKalem.currentTextChanged.connect(self.SecimKalem)
-        ## Ekranda Gösterim için
-        self.win.actionKalem_Ekle.triggered.connect(self.deneme)
+        #Menü ile ilişkilendirme
+        self.win.action_k.triggered.connect(self.win.close)
+        self.win.actionKaydet.triggered.connect(self.Kaydet)
+        self.win.actionG_ncelle.triggered.connect(self.Kaydet)
+        self.win.actionSil.triggered.connect(self.Sil)
+        self.win.actionTemizle.triggered.connect(self.InitUI)
+        self.win.actionKalem_Ekle.triggered.connect(self.PencereAc)
         self.dialog = Dialog(self) 
+        ## Ekranda Gösterim için
         self.win.show()
 
 
 
-    def deneme(self):
-        self.dialog.pencere.show()    
+    def PencereAc(self):
+        self.dialog.pencere.show()
+         
 
     def SecimAy(self,deger):
         self.secilenAy = deger

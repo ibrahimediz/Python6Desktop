@@ -11,7 +11,4 @@ class Dialog(QDialog):
         ## veritabanı ve arayüz dosyaları çağırılıyor
         self.vt = Veritabani(os.getcwd()+r"\IEDB.db")
         self.pencere = uic.loadUi(os.getcwd()+r"\sozluk.ui")
-        self.pencere.pushButton.clicked.connect(self.pencere.close)
-        # self.pencere.show()
-        ## Arayüzdeki nesneler veritabanından dolduruluyor
-        # self.win.show()
+        self.pencere.btIptal.clicked.connect(self.pencere.close)
