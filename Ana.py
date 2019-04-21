@@ -5,7 +5,9 @@ from PyQt5.QtWidgets import QApplication,QMainWindow,QTableWidgetItem,QMessageBo
 from PyQt5.QtCore import pyqtSlot
 from PyQt5 import uic
 from dialog import Dialog
+
 class Ana(QMainWindow):
+    platform = "PyQT5"
     def __init__(self, *args, **kwargs):
         super().__init__()
         ## veritabanı ve arayüz dosyaları çağırılıyor
@@ -30,7 +32,8 @@ class Ana(QMainWindow):
         self.win.actionSil.triggered.connect(self.Sil)
         self.win.actionTemizle.triggered.connect(self.InitUI)
         self.win.actionKalem_Ekle.triggered.connect(self.PencereAc)
-        self.dialog = Dialog(self) 
+        self.dialog = Dialog(self)
+        self.comboEkle(self.dialog)
         ## Ekranda Gösterim için
         self.win.show()
 
@@ -38,7 +41,11 @@ class Ana(QMainWindow):
 
     def PencereAc(self):
         self.dialog.pencere.show()
-         
+        self.cmbAyDoldur()
+
+    def comboEkle(self,dialog_obj):
+        dialog_obj.eklenen.connect(self.cmbAyDoldur)
+
 
     def SecimAy(self,deger):
         self.secilenAy = deger

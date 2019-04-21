@@ -26,6 +26,19 @@ class Veritabani:
         finally:
             self.db.close()
 
+    def TumSozlukListele(self):
+        try:
+            officeboy = self.veritabaniAc()
+            sorgu = """
+            SELECT * FROM HSP_SOZLUK 
+            """
+            officeboy.execute(sorgu)
+            return officeboy.fetchall()
+        except Exception as Hata:
+            print("Hata Mesajı:",Hata)
+        finally:
+            self.db.close()
+
 
     def SozlukListele(self,TabloID):
         try:
@@ -89,6 +102,43 @@ class Veritabani:
             values
             ({},{},{})
             """.format(ay,kalem,tutar)
+            )
+            self.db.commit()
+            return "1"
+        except Exception as Hata:
+            return "Hata Mesajı: {}".format(Hata)
+        finally:
+            self.db.close()
+    
+    def SozlukVeriEkle(self,tablo,sozid,sozad):
+        try:
+            officeboy = self.veritabaniAc()
+            officeboy.execute("""
+            INSERT INTO HSP_SOZLUK 
+            (TABLO_ID,
+            SOZLUK_ID,
+            SOZLUK_ADI)
+            values
+            ({},{},'{}')
+            """.format(tablo,sozid,sozad)
+            )
+            self.db.commit()
+            return "1"
+        except Exception as Hata:
+            return "Hata Mesajı: {}".format(Hata)
+        finally:
+            self.db.close()
+    
+    def SozlukVeriGuncelle(self,tablo,sozid,sozad,ID):
+        try:
+            officeboy = self.veritabaniAc()
+            officeboy.execute("""
+            UPDATE HSP_SOZLUK SET 
+            TABLO_ID = {},
+            SOZLUK_ID = {},
+            SOZLUK_ADI = '{}'
+            WHERE ID = {}
+            """.format(tablo,sozid,sozad,ID)
             )
             self.db.commit()
             return "1"
